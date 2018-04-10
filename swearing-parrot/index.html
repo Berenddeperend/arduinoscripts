@@ -1,0 +1,26 @@
+<html>
+
+<head>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+
+<script>
+    $(document).ready(function() {
+
+        $.get("audio.txt", function(data) {
+
+            // split into lines
+            var lines = data.split("\n");
+
+            $.each(lines, function(index, line) {
+                var str = "" + index,
+                    pad = "0000",
+                    ans = pad.substring(0, pad.length - str.length) + str;
+               console.log('curl "' + line.replace(/ /gi,"%20").trim() + '" -o ' + ans + '.mp3');
+            });
+        });
+
+    });
+</script>
+
+</html>
