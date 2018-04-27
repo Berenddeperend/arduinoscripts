@@ -12,10 +12,10 @@ extern uint8_t BigNumbers[];
 
 MPU6050 accelgyro;
 
-int potPin = A0;
-int ledPin1 = 12;
-int ledPin2 = 13;
+int potPin = A7;
+int motorPin = 3;
 int potValue;
+int mappedGyroVal;
 
 int16_t ax, ay, az;
 int16_t gx, gy, gz;
@@ -25,8 +25,7 @@ bool blinkState = false;
 void setup() {
     Wire.begin();
     Serial.begin(9600);
-    pinMode(ledPin1, OUTPUT);
-    pinMode(ledPin2, OUTPUT);
+    pinMode(motorPin, OUTPUT);
     pinMode(potPin, INPUT);
 
     myOLED.begin();
@@ -39,8 +38,7 @@ void setup() {
     Serial.println("Testing device connections...");
     Serial.println(accelgyro.testConnection() ? "MPU6050 connection successful" : "MPU6050 connection failed");
 
-    // digitalWrite(ledPin1, HIGH);
-    // digitalWrite(ledPin2, HIGH);
+    // digitalWrite(motorPin, HIGH);
 }
 
 void loop() {
@@ -50,18 +48,19 @@ void loop() {
 
         accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);  //31072 en -31072 is zijn de maximale values die uit de sensor kunnen komen.    
 
-        // myOLED.printNumI(map(az, -31072, 31072, 1000, 0), CENTER, 20);
-        myOLED.printNumI(potValue, CENTER, 20);
+        mappedGyroVal = map(az, -31072, 31072, 1000, 0);
+
+        myOLED.printNumI(mappedGyroVal, CENTER, 20);
+        myOLED.printNumI(potValue, CENTER, 60);
+        // myOLED.printNumI(potValue, CENTER, 20);
         // Serial.println(analogRead(potPin));
         myOLED.update();
         myOLED.clrScr();
 
-        if(potValue < 300 && potValue > 290) {
-            digitalWrite(ledPin1, HIGH);
-            digitalWrite(ledPin1, HIGH);
+        if(mappedGyroVal < (potValue + 100)  && mappedGyroVal > (potValue - 100)) {
+            digitalWrite(motorPin, HIGH);
         } else {
-            digitalWrite(ledPin1, LOW);
-            digitalWrite(ledPin1, LOW);
+            digitalWrite(motorPin, LOW);
         }
 
         // Serial.println(az);
