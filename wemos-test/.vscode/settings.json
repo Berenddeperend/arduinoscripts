@@ -1,0 +1,6 @@
+{
+  "terminal.integrated.env.osx": {
+    "PATH": "/Users/Swennenhuis/.platformio/penv/bin:/Users/Swennenhuis/.platformio/penv:/Users/Swennenhuis/.nvm/versions/node/v10.5.0/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Applications/VMware Fusion.app/Contents/Public:/Users/Swennenhuis/.rvm/bin:/usr/local/Caskroom/android-sdk/3859397,26.0.2/platform-tools:/usr/local/Caskroom/android-sdk/3859397,26.0.2/tools",
+    "PLATFORMIO_CALLER": "vscode"
+  }
+}

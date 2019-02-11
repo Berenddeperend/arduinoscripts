@@ -1,0 +1,5 @@
+{
+    "sketch": "Blink.ino",
+    "port": "/dev/cu.SLAB_USBtoUART",
+    "board": "arduino:avr:circuitplay32u4cat"
+}

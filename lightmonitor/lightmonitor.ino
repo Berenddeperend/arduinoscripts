@@ -1,6 +1,3 @@
-int brightness = 0;    // how bright the LED is
-int fadeAmount = 5;    // how many points to fade the LED by
-
 void setup() { 
   pinMode(3, OUTPUT);
   pinMode(5, OUTPUT);
@@ -17,20 +14,5 @@ void loop() {
     )  + "%"
   );
 
-
-
-  // analogWrite(3, 255);
-  // analogWrite(5, 255);
-  // delay(100);
-
-
-  analogWrite(3, brightness);
-  analogWrite(5, brightness);
-
-  brightness = brightness + fadeAmount;
-
-  if (brightness <= 0 || brightness >= 255) {
-    fadeAmount = -fadeAmount;
-  }
-  delay(30);
+  delay(100);
 }

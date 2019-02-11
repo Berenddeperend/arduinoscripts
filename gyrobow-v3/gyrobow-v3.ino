@@ -44,11 +44,11 @@ void setup() {
 void loop() {
     // read raw accel/gyro measurements from device
     if(millis() % 100 == 0) {
-        potValue = map(analogRead(potPin), 0, 1023, 100, 900);
+        potValue = map(analogRead(potPin), 0, 1023, 50, 70);
 
         accelgyro.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);  //31072 en -31072 is zijn de maximale values die uit de sensor kunnen komen.    
 
-        mappedGyroVal = map(az, -31072, 31072, 1000, 0);
+        mappedGyroVal = map(az, -31072, 31072, 100, 0);
 
         myOLED.printNumI(mappedGyroVal, LEFT, 20);
         myOLED.printNumI(potValue, RIGHT, 20);
@@ -57,7 +57,7 @@ void loop() {
         myOLED.update();
         myOLED.clrScr();
 
-        if(mappedGyroVal < (potValue + 10)  && mappedGyroVal > (potValue - 10)) {
+        if(mappedGyroVal < (potValue + 1)  && mappedGyroVal > (potValue - 1)) {
             digitalWrite(motorPin, HIGH);
         } else {
             digitalWrite(motorPin, LOW);
