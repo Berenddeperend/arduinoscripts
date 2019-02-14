@@ -5,17 +5,24 @@
 #include <ESP8266HTTPClient.h>
  
 // WiFi parameters to be configured
-const char* ssid = "swennenhuis"; // Hoofdlettergevoelig
-const char* password = "jambosana"; // Hoofdlettergevoelig
+const char* ssid = "Estis Design 2.4"; // Hoofdlettergevoelig
+const char* password = "CooleRooney"; // Hoofdlettergevoelig
 
 const char* http_site = "http://195.240.135.237:4000/api/echo";
 
-String header;
+bool isPumping = false;
+unsigned long myTime;
+unsigned long previousMillis = 0;        // will store last time LED was updated
+unsigned long currentMillis;
+unsigned long interval = 1000;           // interval at which to blink (milliseconds)
 
+String header;
 WiFiServer server(80); 
 
 
 void setup() { 
+  pinMode(12, OUTPUT);
+
   Serial.begin(9600);
   Serial.print("Bezig met verbinden");
   WiFi.begin(ssid, password); // Connect to WiFi
@@ -60,6 +67,18 @@ void postSensorData() {
   http.end(); //Close connection
 }
 
+void setupPump() {
+  currentMillis = millis();
+  if(currentMillis - previousMillis > interval) {
+    digitalWrite(12, LOW); //stop pumping.
+  }
+}
+
+void doPump() {
+  previousMillis = currentMillis;
+  digitalWrite(12, HIGH);
+}
+
 void startServer() {
   WiFiClient client = server.available();   // Listen for incoming clients
   if (client) {                             // If a new client connects,
@@ -82,6 +101,16 @@ void startServer() {
             client.println();
             
             // Display the HTML web page
+
+            doPump();
+            // isPumping = !isPumping;
+            
+            // if (isPumping) {
+            //   digitalWrite(12, HIGH);
+            // } else {
+            //   digitalWrite(12, LOW);
+            // }
+
             client.println("<!DOCTYPE html><html>");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
             client.println("<link rel=\"icon\" href=\"data:,\">");
@@ -119,15 +148,16 @@ void startServer() {
   }
 }
 
-
-
 void loop() {
- if(WiFi.status()== WL_CONNECTED){ //Check WiFi connection status
-    // postSensorData();
-    startServer();
-  } else {
-    Serial.println("Error in WiFi connection");   
-  }
-  // delay(30000); //Send a request every 30 seconds
+  myTime = millis();
+
+  if(WiFi.status() == WL_CONNECTED){ //Check WiFi connection status
+      // postSensorData();
+      startServer();
+      setupPump();
+    } else {
+      Serial.println("Error in WiFi connection");   
+    }
+    // delay(30000); //Send a request every 30 seconds
 }
 
