@@ -5,16 +5,16 @@
 #include <ESP8266HTTPClient.h>
  
 // WiFi parameters to be configured
-const char* ssid = "Estis Design 2.4"; // Hoofdlettergevoelig
-const char* password = "CooleRooney"; // Hoofdlettergevoelig
+const char* ssid = "swennenhuis"; // Hoofdlettergevoelig
+const char* password = "jambosana"; // Hoofdlettergevoelig
 
 const char* http_site = "http://195.240.135.237:4000/api/echo";
 
 bool isPumping = false;
 unsigned long myTime;
-unsigned long previousMillis = 0;        // will store last time LED was updated
+unsigned long previousMillis = 0;
 unsigned long currentMillis;
-unsigned long interval = 1000;           // interval at which to blink (milliseconds)
+unsigned long interval = 500;
 
 String header;
 WiFiServer server(80); 
@@ -82,12 +82,12 @@ void doPump() {
 void startServer() {
   WiFiClient client = server.available();   // Listen for incoming clients
   if (client) {                             // If a new client connects,
-    Serial.println("New Client.");          // print a message out in the serial port
+    // Serial.println("New Client.");          // print a message out in the serial port
     String currentLine = "";                // make a String to hold incoming data from the client
     while (client.connected()) {            // loop while the client's connected
       if (client.available()) {             // if there's bytes to read from the client,
         char c = client.read();             // read a byte, then
-        Serial.write(c);                    // print it out the serial monitor
+        // Serial.write(c);                    // print it out the serial monitor
         header += c;
         if (c == '\n') {                    // if the byte is a newline character
           // if the current line is blank, you got two newline characters in a row.
@@ -103,29 +103,22 @@ void startServer() {
             // Display the HTML web page
 
             doPump();
-            // isPumping = !isPumping;
-            
-            // if (isPumping) {
-            //   digitalWrite(12, HIGH);
-            // } else {
-            //   digitalWrite(12, LOW);
-            // }
 
-            client.println("<!DOCTYPE html><html>");
-            client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-            client.println("<link rel=\"icon\" href=\"data:,\">");
-            // CSS to style the on/off buttons 
-            // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
-            client.println(".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;");
-            client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            client.println(".button2 {background-color: #77878A;}</style></head>");
+            // client.println("<!DOCTYPE html><html>");
+            // client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            // client.println("<link rel=\"icon\" href=\"data:,\">");
+            // // CSS to style the on/off buttons 
+            // // Feel free to change the background-color and font-size attributes to fit your preferences
+            // client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+            // client.println(".button { background-color: #195B6A; border: none; color: white; padding: 16px 40px;");
+            // client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
+            // client.println(".button2 {background-color: #77878A;}</style></head>");
             
-            // Web Page Heading
-            client.println("<body><h1>ESP8266 Web Server</h1>");
+            // // Web Page Heading
+            // client.println("<body><h1>ESP8266 Web Server</h1>");
             
-            // Display current state, and ON/OFF buttons for GPIO 5  
-            client.println("</body></html>");
+            // // Display current state, and ON/OFF buttons for GPIO 5  
+            // client.println("</body></html>");
             
             // The HTTP response ends with another blank line
             client.println();
@@ -143,8 +136,8 @@ void startServer() {
     header = "";
     // Close the connection
     client.stop();
-    Serial.println("Client disconnected.");
-    Serial.println("");
+    // Serial.println("Client disconnected.");
+    // Serial.println("");
   }
 }
 
